@@ -5,23 +5,23 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const noteRoutes = require("./routes/noteRoutes");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("🍃 MongoDB подключена успешно!"))
-  .catch((err) => console.log("❌ Ошибка подключения к MongoDB:", err));
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("🍃 MongoDB connected successfully!"))
+  .catch((err) => console.log("❌ Mongo connection error:", err));
 
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
-// app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.send("hi");
-});
+app.use("/api/notes", noteRoutes);
 
 app.listen(PORT, () => {
-  console.log(`server started on http://localhost:${PORT}`)
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
